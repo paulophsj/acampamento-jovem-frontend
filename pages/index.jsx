@@ -1,6 +1,8 @@
+import Login from '@/components/Login';
 import { faFacebook, faInstagram, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { faBirthdayCake, faEnvelope, faFire, faHeart, faMapMarked, faPhone, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 const AcampamentoJuventude = () => {
@@ -49,13 +51,13 @@ const AcampamentoJuventude = () => {
       formDataObj[key] = value;
     });
     await fetch('http://localhost:8080/usuario/create', {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(formDataObj),
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formDataObj),
     }).then(() => {
-        console.log("Salvo no Banco!")
+      console.log("Salvo no Banco!")
     }).catch((err) => {
-        console.error("Deu erro " + err)
+      console.error("Deu erro " + err)
     })
     e.target.reset();
   };
@@ -64,14 +66,14 @@ const AcampamentoJuventude = () => {
     e.preventDefault();
     const name = e.target.messageName.value;
     const text = e.target.messageText.value;
-    
+
     if (name && text) {
       const newMessage = {
         id: Date.now(),
         text: text,
         author: name
       };
-      
+
       setMessages(prev => [newMessage, ...prev]);
       e.target.reset();
     }
@@ -88,14 +90,14 @@ const AcampamentoJuventude = () => {
     e.preventDefault();
     const targetId = e.currentTarget.getAttribute('href');
     const targetElement = document.querySelector(targetId);
-    
+
     if (targetElement) {
       window.scrollTo({
         top: targetElement.offsetTop - 80,
         behavior: 'smooth'
       });
     }
-    
+
     setMobileMenuOpen(false);
   };
 
@@ -108,9 +110,9 @@ const AcampamentoJuventude = () => {
             <div className="cross-icon"></div>
             <span className="font-bold text-lg">Acampamento 2025</span>
           </div>
-          
-          <button 
-            id="mobile-menu-button" 
+
+          <button
+            id="mobile-menu-button"
             className="md:hidden focus:outline-none"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
@@ -118,7 +120,7 @@ const AcampamentoJuventude = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
             </svg>
           </button>
-          
+
           <nav className="hidden md:flex space-x-8">
             <a href="#home" className="nav-link relative group hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Início<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span></a>
             <a href="#about" className="nav-link relative group hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Sobre<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span></a>
@@ -126,9 +128,13 @@ const AcampamentoJuventude = () => {
             <a href="#registration" className="nav-link relative group hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Inscrição<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span></a>
             <a href="#messages" className="nav-link relative group hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Mensagens<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span></a>
             <a href="#contact" className="nav-link relative group hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Contato<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span></a>
+            <Link href={{ pathname: "/login" }} className='className="nav-link relative group hover:text-gray-300 transition-colors"'>
+              Login
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+            </Link>
           </nav>
         </div>
-        
+
         {/* Mobile Menu */}
         <div id="mobile-menu" className={`${mobileMenuOpen ? 'block' : 'hidden'} md:hidden bg-black bg-opacity-95 w-full`}>
           <div className="container mx-auto px-4 py-3 flex flex-col space-y-4">
@@ -138,6 +144,9 @@ const AcampamentoJuventude = () => {
             <a href="#registration" className="text-white hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Inscrição</a>
             <a href="#messages" className="text-white hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Mensagens</a>
             <a href="#contact" className="text-white hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Contato</a>
+            <Link href={{ pathname: "/login" }}>
+              Login
+            </Link>
           </div>
         </div>
       </header>
@@ -166,49 +175,49 @@ const AcampamentoJuventude = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">SOBRE O ACAMPAMENTO</h2>
-            
+
             <div className="grid md:grid-cols-2 gap-12">
               <div className="bg-gray-900 p-8 rounded-lg">
                 <div className="flex items-center mb-6">
                   <div className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center mr-4">
-                    <FontAwesomeIcon icon={faHeart}/>
+                    <FontAwesomeIcon icon={faHeart} />
                   </div>
                   <h3 className="text-xl font-bold">Nosso Propósito</h3>
                 </div>
                 <p className="text-gray-300">O Acampamento da Juventude é um momento especial de conexão espiritual, onde jovens de diversas redes da Igreja Batista em Coqueiral se reúnem para fortalecer sua fé, criar laços de amizade e vivenciar experiências transformadoras.</p>
               </div>
-              
+
               <div className="bg-gray-900 p-8 rounded-lg">
                 <div className="flex items-center mb-6">
                   <div className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center mr-4">
-                    <FontAwesomeIcon icon={faUser}/>
+                    <FontAwesomeIcon icon={faUser} />
                   </div>
                   <h3 className="text-xl font-bold">União de Redes</h3>
                 </div>
                 <p className="text-gray-300">Reunimos adolescentes e jovens de diversos grupos pequenos, projetos locais e regionais, incluindo participantes do Agreste de Pernambuco, criando uma comunidade vibrante e diversa unida pela fé.</p>
               </div>
-              
+
               <div className="bg-gray-900 p-8 rounded-lg">
                 <div className="flex items-center mb-6">
                   <div className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center mr-4">
-                    <FontAwesomeIcon icon={faBirthdayCake}/>
+                    <FontAwesomeIcon icon={faBirthdayCake} />
                   </div>
                   <h3 className="text-xl font-bold">Edição Centenário</h3>
                 </div>
                 <p className="text-gray-300">Em 2025, celebramos o centenário da Igreja Batista em Coqueiral, tornando este acampamento uma edição histórica e especial. Uma oportunidade única de fazer parte desta celebração enquanto renovamos nossa fé.</p>
               </div>
-              
+
               <div className="bg-gray-900 p-8 rounded-lg">
                 <div className="flex items-center mb-6">
                   <div className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center mr-4">
-                    <FontAwesomeIcon icon={faFire}/>
+                    <FontAwesomeIcon icon={faFire} />
                   </div>
                   <h3 className="text-xl font-bold">Impacto Transformador</h3>
                 </div>
                 <p className="text-gray-300">Mais que um evento, o acampamento é uma experiência que transforma vidas. Através de momentos de adoração, estudos bíblicos, atividades recreativas e comunhão, buscamos um encontro genuíno com Deus.</p>
               </div>
             </div>
-            
+
             <div className="mt-12 text-center">
               <p className="text-xl font-light italic">"Esperamos receber cerca de 300 participantes para juntos vivermos momentos inesquecíveis de fé e comunhão."</p>
             </div>
@@ -220,7 +229,7 @@ const AcampamentoJuventude = () => {
       <section id="gallery" className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">GALERIA DE FOTOS</h2>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {/* Placeholder for gallery images */}
             <div className="gallery-item aspect-square hover:scale-105 transition-transform bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
@@ -264,7 +273,7 @@ const AcampamentoJuventude = () => {
               </svg>
             </div>
           </div>
-          
+
           <div className="mt-10 text-center">
             <p className="text-gray-600">Fotos de acampamentos anteriores. Venha fazer parte desta história!</p>
           </div>
@@ -275,7 +284,7 @@ const AcampamentoJuventude = () => {
       <section id="registration" className="py-20 bg-black text-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">INSCRIÇÃO</h2>
-          
+
           <div className="max-w-3xl mx-auto bg-gray-900 rounded-lg p-8">
             <form id="registration-form" className="space-y-6" onSubmit={handleRegistrationSubmit}>
               <div className="grid md:grid-cols-2 gap-6">
@@ -283,37 +292,37 @@ const AcampamentoJuventude = () => {
                   <label htmlFor="nome" className="block mb-2 font-medium">Nome completo</label>
                   <input type="text" id="nome" name="nome" required className="form-input w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none" />
                 </div>
-                
+
                 <div>
                   <label htmlFor="nomeGrupo" className="block mb-2 font-medium">Nome do grupo pequeno</label>
                   <input type="text" id="nomeGrupo" name="nomeGrupo" required className="form-input w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none" />
                 </div>
-                
+
                 <div>
                   <label htmlFor="telefoneUsuario" className="block mb-2 font-medium">Telefone do participante</label>
                   <input type="tel" id="telefoneUsuario" name="telefoneUsuario" required className="form-input w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none" />
                 </div>
-                
+
                 <div>
                   <label htmlFor="nomeResponsavel" className="block mb-2 font-medium">Nome do responsável</label>
                   <input type="text" id="nomeResponsavel" name="nomeResponsavel" required className="form-input w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none" />
                 </div>
-                
+
                 <div>
                   <label htmlFor="telefoneResponsavel" className="block mb-2 font-medium">Telefone do responsável</label>
                   <input type="tel" id="telefoneResponsavel" name="telefoneResponsavel" required className="form-input w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none" />
                 </div>
-                
+
                 <div>
                   <label htmlFor="parentescoResponsavel" className="block mb-2 font-medium">Relação do responsável com o participante</label>
                   <input type="text" id="parentescoResponsavel" name="parentescoResponsavel" required className="form-input w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none" />
                 </div>
-                
+
                 <div>
                   <label htmlFor="rede" className="block mb-2 font-medium">Rede ou projeto ao qual pertence</label>
                   <input type="text" id="rede" name="rede" required className="form-input w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none" />
                 </div>
-                
+
                 <div>
                   <label htmlFor="tamanhoCamisa" className="block mb-2 font-medium">Tamanho da camisa</label>
                   <select id="tamanhoCamisa" name="tamanhoCamisa" required className="form-input w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none">
@@ -327,15 +336,15 @@ const AcampamentoJuventude = () => {
                   </select>
                 </div>
               </div>
-              
+
               <div className="border-t border-gray-700 pt-6 mt-6">
                 <h3 className="text-xl font-bold mb-4">Informações de Saúde</h3>
-                
+
                 <div className="space-y-6">
                   <div>
                     <label className="flex items-center">
-                      <input 
-                        type="checkbox" 
+                      <input
+                        type="checkbox"
                         className="mr-2 h-5 w-5"
                         checked={hasMedication}
                         onChange={(e) => setHasMedication(e.target.checked)}
@@ -344,20 +353,20 @@ const AcampamentoJuventude = () => {
                     </label>
                     <div id="medicationDetails" className={`mt-3 ${hasMedication ? 'block' : 'hidden'}`}>
                       <label htmlFor="medication" className="block mb-2 font-medium">Qual medicamento?</label>
-                      <input 
-                        type="text" 
-                        id="temMedicamento" 
-                        name="temMedicamento" 
+                      <input
+                        type="text"
+                        id="temMedicamento"
+                        name="temMedicamento"
                         className="form-input w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none"
                         required={hasMedication}
                       />
                     </div>
                   </div>
-                  
+
                   <div>
                     <label className="flex items-center">
-                      <input 
-                        type="checkbox" 
+                      <input
+                        type="checkbox"
                         className="mr-2 h-5 w-5"
                         checked={hasAllergies}
                         onChange={(e) => setHasAllergies(e.target.checked)}
@@ -366,20 +375,20 @@ const AcampamentoJuventude = () => {
                     </label>
                     <div id="allergiesDetails" className={`mt-3 ${hasAllergies ? 'block' : 'hidden'}`}>
                       <label htmlFor="allergies" className="block mb-2 font-medium">Quais alergias?</label>
-                      <input 
-                        type="text" 
-                        id="temAlergia" 
-                        name="temAlergia" 
+                      <input
+                        type="text"
+                        id="temAlergia"
+                        name="temAlergia"
                         className="form-input w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none"
                         required={hasAllergies}
                       />
                     </div>
                   </div>
-                  
+
                   <div>
                     <label className="flex items-center">
-                      <input 
-                        type="checkbox" 
+                      <input
+                        type="checkbox"
                         className="mr-2 h-5 w-5"
                         checked={hasPsychMeds}
                         onChange={(e) => setHasPsychMeds(e.target.checked)}
@@ -388,10 +397,10 @@ const AcampamentoJuventude = () => {
                     </label>
                     <div id="psychMedsDetails" className={`mt-3 ${hasPsychMeds ? 'block' : 'hidden'}`}>
                       <label htmlFor="psychTreatment" className="block mb-2 font-medium">Qual o tipo de tratamento ou problema?</label>
-                      <input 
-                        type="text" 
-                        id="temMedicamentoControlado" 
-                        name="temMedicamentoControlado" 
+                      <input
+                        type="text"
+                        id="temMedicamentoControlado"
+                        name="temMedicamentoControlado"
                         className="form-input w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none"
                         required={hasPsychMeds}
                       />
@@ -399,7 +408,7 @@ const AcampamentoJuventude = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="text-center pt-6">
                 <button type="submit" className="bg-white cursor-pointer text-black px-8 py-3 rounded-full font-bold hover:bg-gray-200 transition-colors transform hover:scale-105 duration-200">ENVIAR INSCRIÇÃO</button>
               </div>
@@ -412,7 +421,7 @@ const AcampamentoJuventude = () => {
       <section id="messages" className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">MURAL DE MENSAGENS</h2>
-          
+
           <div className="max-w-4xl mx-auto">
             <div className="bg-gray-100 rounded-lg p-6 mb-10">
               <form id="message-form" className="space-y-4" onSubmit={handleMessageSubmit}>
@@ -420,18 +429,18 @@ const AcampamentoJuventude = () => {
                   <label htmlFor="messageName" className="block mb-2 font-medium">Seu nome</label>
                   <input type="text" id="messageName" name="messageName" required className="form-input bg-white w-full px-4 py-2 rounded border border-gray-300 focus:outline-1" />
                 </div>
-                
+
                 <div>
                   <label htmlFor="messageText" className="block mb-2 font-medium">Sua mensagem, expectativa ou oração</label>
                   <textarea id="messageText" name="messageText" rows="4" required className="form-input bg-white w-full px-4 py-2 rounded border border-gray-300 focus:outline-1"></textarea>
                 </div>
-                
+
                 <div className="text-center">
                   <button type="submit" className="bg-black text-white px-6 py-2 rounded-full font-bold hover:bg-gray-800 transition-colors">COMPARTILHAR</button>
                 </div>
               </form>
             </div>
-            
+
             <div id="messages-container" className="grid md:grid-cols-2 gap-6">
               {messages.map(message => (
                 <div key={message.id} className="message-card bg-gray-100 p-6 rounded-lg">
@@ -448,12 +457,12 @@ const AcampamentoJuventude = () => {
       <section id="contact" className="py-20 bg-black text-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">CONTATO</h2>
-          
+
           <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-10">
             <div>
               <div className="bg-gray-900 p-8 rounded-lg h-full">
                 <h3 className="text-xl font-bold mb-6">Informações</h3>
-                
+
                 <div className="space-y-6">
                   <div className="flex items-start">
                     <div className="w-10 h-10 bg-white text-black rounded-full flex items-center justify-center mr-4 flex-shrink-0">
@@ -464,20 +473,20 @@ const AcampamentoJuventude = () => {
                       <p className="text-gray-300">Estrada do Monjope, 54 - Monjope, Igarassu - PE</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start">
                     <div className="w-10 h-10 bg-white text-black rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                      <FontAwesomeIcon icon={faPhone}/>
+                      <FontAwesomeIcon icon={faPhone} />
                     </div>
                     <div>
                       <p className="font-bold mb-1">Telefone</p>
                       <p className="text-gray-300">(81) 99949-2125</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start">
                     <div className="w-10 h-10 bg-white text-black rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                      <FontAwesomeIcon icon={faEnvelope}/>
+                      <FontAwesomeIcon icon={faEnvelope} />
                     </div>
                     <div>
                       <p className="font-bold mb-1">E-mail</p>
@@ -487,19 +496,19 @@ const AcampamentoJuventude = () => {
                 </div>
               </div>
             </div>
-            
+
             <div>
               <div className="bg-gray-900 p-8 rounded-lg h-full">
                 <h3 className="text-xl font-bold mb-6">Redes Sociais</h3>
-                
+
                 <div className="space-y-6">
                   <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" className="flex items-center group">
                     <div className="w-10 h-10 bg-white text-black rounded-full flex items-center justify-center mr-4 group-hover:bg-green-500 group-hover:text-white transition-colors">
-                      <FontAwesomeIcon icon={faWhatsapp}/>
+                      <FontAwesomeIcon icon={faWhatsapp} />
                     </div>
                     <span className="group-hover:underline">WhatsApp</span>
                   </a>
-                  
+
                   <div className="pt-6 border-t border-gray-700">
                     <h4 className="font-bold mb-4">Compartilhe este evento</h4>
                     <div className="flex space-x-4">
@@ -507,10 +516,10 @@ const AcampamentoJuventude = () => {
                         <FontAwesomeIcon icon={faFacebook} />
                       </a>
                       <a href="#" className="w-10 h-10 bg-white text-black rounded-full flex items-center justify-center hover:bg-pink-600 hover:text-white transition-colors">
-                        <FontAwesomeIcon icon={faInstagram}/>
+                        <FontAwesomeIcon icon={faInstagram} />
                       </a>
                       <a href="#" className="w-10 h-10 bg-white text-black rounded-full flex items-center justify-center hover:bg-blue-400 hover:text-white transition-colors">
-                        <FontAwesomeIcon icon={faTwitter}/>
+                        <FontAwesomeIcon icon={faTwitter} />
                       </a>
                     </div>
                   </div>
@@ -532,7 +541,7 @@ const AcampamentoJuventude = () => {
               </div>
               <p className="text-gray-400 mt-2">Igreja Batista em Coqueiral</p>
             </div>
-            
+
             <div className="text-center md:text-right">
               <p className="text-gray-400">© 2024 Igreja Batista em Coqueiral</p>
               <p className="text-gray-400">Edição Especial de Centenário</p>
@@ -542,8 +551,8 @@ const AcampamentoJuventude = () => {
       </footer>
 
       {/* Back to Top Button */}
-      <button 
-        id="back-to-top" 
+      <button
+        id="back-to-top"
         className={`fixed bottom-6 right-6 bg-black text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 ${showBackToTop ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
         onClick={scrollToTop}
       >
