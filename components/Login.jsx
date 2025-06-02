@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Alert from "./LabelMessage";
 import Loader from "./Loader";
+import { UserContext } from "./User/UserContext";
 
 export default function Login() {
+    const { logged, setLogged } = useContext(UserContext)
     const [message, setMessage] = useState("");
     const [isError, setIsError] = useState(false);
     const [loading, setLoading] = useState(false);
+
 
     const formSubmit = async (e) => {
         e.preventDefault();
@@ -23,6 +26,7 @@ export default function Login() {
             const data = await response.json();
             setMessage(data.message || "Login realizado");
             setIsError(!response.ok);
+            await definirUsuario(data.access_token)
         } catch (error) {
             setMessage(error.message || "Erro inesperado");
             setIsError(true);
@@ -30,6 +34,22 @@ export default function Login() {
             setLoading(false);
         }
     };
+    const definirUsuario = async (access_token) => {
+        try {
+            const response = await fetch('http://localhost:8080/auth/profile', {
+                headers: {
+                    "Authorization": `Bearer ${access_token}`
+                }
+            })
+            const data = await response.json()
+            setLogged({
+                id: data.sub,
+                email: data.email
+            })
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">

@@ -1,12 +1,12 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-export function middleware(request) {
-  const response = NextResponse.next()
-  const accessToken = request.cookies.get('access_token')?.value
-
-  console.log(accessToken)
-
-  return response
+export function middleware(request: NextRequest) {
+  if(request.nextUrl.pathname.startsWith('/login')){
+    const cookie = request.cookies.get('access_token')?.value
+    if(cookie){
+      return NextResponse.redirect(new URL('/', request.url))
+    }
+  }
 }
 
 export const config = {
