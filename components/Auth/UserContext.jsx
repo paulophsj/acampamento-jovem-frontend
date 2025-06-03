@@ -1,60 +1,27 @@
+import { CheckUserLogged } from "@/api/Auth";
+
 const { createContext, useState, useEffect, useContext } = require("react");
 
 const UserContext = createContext()
 
 export function UserProvider({ children }) {
     const [user, setUser] = useState(null)
-    const [token, setToken] = useState(false)
 
     useEffect(() => {
-        const storedToken = localStorage.getItem('token')
-        const storedUser = localStorage.getItem('user_profile')
-
-        if (storedToken && storedUser) {
-            setToken(storedToken)
-            setUser(JSON.parse(storedUser))
-        }
+        checkAuth()
     }, [])
 
-    const login = async (credentials) => {
+    const checkAuth = async () => {
         try {
-            const response = await fetch("http://localhost:8080/auth/login", {
-                method: "POST",
-                headers: { "Content-type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify(credentials),
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || "Erro ao logar");
-            }
-            return data;
-        } catch (error) {
-            throw new Error(error.message || "Erro ao logar");
+            const userData = await CheckUserLogged()
+            setUser(userData)
+        }catch (err) {
+            setUser(null)
         }
-    };
-    const checkLogged = async (token) => {
-        try {
-            const response = await fetch("http://localhost:8080/auth/profile", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || "Erro ao logar");
-            }
-            return data;
-        } catch (error) {
-            throw new Error(error.message || "Erro ao localizar perfil");
-        }
-    };
-
+    }
+    
     return (
-        <UserContext.Provider value={{ user, token, login, checkLogged }}>
+        <UserContext.Provider value={{ user }}>
             {children}
         </UserContext.Provider>
     )

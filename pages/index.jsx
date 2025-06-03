@@ -1,4 +1,5 @@
 import { UseUserContext } from '@/components/Auth/UserContext';
+import Loader from '@/components/Loader';
 import { faFacebook, faInstagram, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { faBirthdayCake, faEnvelope, faFire, faHeart, faMapMarked, faPhone, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,7 +7,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 const AcampamentoJuventude = () => {
-  let { user } = UseUserContext()
+  const { user } = UseUserContext()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hasMedication, setHasMedication] = useState(false);
   const [hasAllergies, setHasAllergies] = useState(false);
@@ -129,19 +130,20 @@ const AcampamentoJuventude = () => {
             <a href="#registration" className="nav-link relative group hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Inscrição<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span></a>
             <a href="#messages" className="nav-link relative group hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Mensagens<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span></a>
             <a href="#contact" className="nav-link relative group hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Contato<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span></a>
-            {
-              user && user.sub ? (
-                <Link href={{ pathname: "/dashboard" }} className='className="nav-link relative group hover:text-gray-300 transition-colors"'>
-                  {user.email}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              ) : (
-                <Link href={{ pathname: "/login" }} className='className="nav-link relative group hover:text-gray-300 transition-colors"'>
-                  Login
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              )
-            }
+              {
+                  user && user.sub ? (
+                    <Link href={{ pathname: "/dashboard" }} className='className="nav-link relative group hover:text-gray-300 transition-colors"'>
+                      {user.email}
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
+                  ) : (
+                    <Link href={{ pathname: "/login" }} className='className="nav-link relative group hover:text-gray-300 transition-colors"'>
+                      Login
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
+                  )
+                
+              }
           </nav>
         </div>
 
@@ -159,10 +161,10 @@ const AcampamentoJuventude = () => {
             </Link>
           </div>
         </div>
-      </header>
+      </header >
 
       {/* Hero Section */}
-      <section id="home" className="hero-section min-h-screen flex items-center justify-center text-white pt-16">
+      < section id="home" className="hero-section min-h-screen flex items-center justify-center text-white pt-16" >
         <div className="container mx-auto px-4 text-center">
           <div className="mb-6">
             <svg className="w-16 h-16 mx-auto mb-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -178,10 +180,10 @@ const AcampamentoJuventude = () => {
             <a href="#about" className="border-2 border-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-black transition-colors" onClick={handleAnchorClick}>SAIBA MAIS</a>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-black text-white">
+      < section id="about" className="py-20 bg-black text-white" >
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">SOBRE O ACAMPAMENTO</h2>
@@ -233,10 +235,10 @@ const AcampamentoJuventude = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* Gallery Section */}
-      <section id="gallery" className="py-20 bg-white">
+      < section id="gallery" className="py-20 bg-white" >
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">GALERIA DE FOTOS</h2>
 
@@ -288,10 +290,10 @@ const AcampamentoJuventude = () => {
             <p className="text-gray-600">Fotos de acampamentos anteriores. Venha fazer parte desta história!</p>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* Registration Form Section */}
-      <section id="registration" className="py-20 bg-black text-white">
+      < section id="registration" className="py-20 bg-black text-white" >
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">INSCRIÇÃO</h2>
 
@@ -425,10 +427,10 @@ const AcampamentoJuventude = () => {
             </form>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* Messages Wall Section */}
-      <section id="messages" className="py-20 bg-white">
+      < section id="messages" className="py-20 bg-white" >
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">MURAL DE MENSAGENS</h2>
 
@@ -461,10 +463,10 @@ const AcampamentoJuventude = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-black text-white">
+      < section id="contact" className="py-20 bg-black text-white" >
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">CONTATO</h2>
 
@@ -538,10 +540,10 @@ const AcampamentoJuventude = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-10">
+      < footer className="bg-gray-900 text-white py-10" >
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-6 md:mb-0">
@@ -558,10 +560,10 @@ const AcampamentoJuventude = () => {
             </div>
           </div>
         </div>
-      </footer>
+      </footer >
 
       {/* Back to Top Button */}
-      <button
+      < button
         id="back-to-top"
         className={`fixed bottom-6 right-6 bg-black text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 ${showBackToTop ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
         onClick={scrollToTop}
@@ -569,8 +571,8 @@ const AcampamentoJuventude = () => {
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
         </svg>
-      </button>
-    </div>
+      </button >
+    </div >
   );
 };
 

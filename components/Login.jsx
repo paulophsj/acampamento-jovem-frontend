@@ -2,10 +2,9 @@ import { useState } from "react";
 import Alert from "./LabelMessage";
 import Loader from "./Loader";
 import { useRouter } from "next/router";
-import { UseUserContext } from "./Auth/UserContext";
+import { CheckUserLogged, UserLogin } from "@/api/Auth";
 
 export default function Login() {
-    let {login, checkLogged} = UseUserContext()
     const [message, setMessage] = useState("");
     const [isError, setIsError] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -19,11 +18,7 @@ export default function Login() {
             const formResponse = new FormData(e.target);
             const credentials = Object.fromEntries(formResponse);
 
-            const { access_token, message } = await login(credentials)
-            const userProfile = await checkLogged(access_token)
-
-            localStorage.setItem('token', access_token)
-            localStorage.setItem('user_profile', JSON.stringify(userProfile))
+            const { message } = await UserLogin(credentials)
 
             setMessage(message + ". Redirecionando... ")
             setIsError(false)
@@ -74,7 +69,7 @@ export default function Login() {
                     </div>
                     {
                         loading ? (
-                            <Loader />
+                            <Loader spinCollor={'black'} borderCollor={'white'} />
                         ) : (
                             <button
                                 type="submit"
