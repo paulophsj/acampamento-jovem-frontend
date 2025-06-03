@@ -1,53 +1,40 @@
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import Alert from "./LabelMessage";
 import Loader from "./Loader";
-import { UserContext } from "./User/UserContext";
+import { useRouter } from "next/router";
+import { UseUserContext } from "./Auth/UserContext";
 
 export default function Login() {
-    const { logged, setLogged } = useContext(UserContext)
+    let {login, checkLogged} = UseUserContext()
     const [message, setMessage] = useState("");
     const [isError, setIsError] = useState(false);
     const [loading, setLoading] = useState(false);
+    const router = useRouter()
 
 
     const formSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        const formResponse = new FormData(e.target);
-        const formObject = Object.fromEntries(formResponse);
         try {
-            const response = await fetch("http://localhost:8080/auth/login", {
-                method: "POST",
-                headers: { "Content-type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify(formObject),
-            });
+            const formResponse = new FormData(e.target);
+            const credentials = Object.fromEntries(formResponse);
 
-            const data = await response.json();
-            setMessage(data.message || "Login realizado");
-            setIsError(!response.ok);
-            await definirUsuario(data.access_token)
+            const { access_token, message } = await login(credentials)
+            const userProfile = await checkLogged(access_token)
+
+            localStorage.setItem('token', access_token)
+            localStorage.setItem('user_profile', JSON.stringify(userProfile))
+
+            setMessage(message + ". Redirecionando... ")
+            setIsError(false)
+            setTimeout(() => {
+                router.push('/')
+            }, 3000)
         } catch (error) {
-            setMessage(error.message || "Erro inesperado");
-            setIsError(true);
+            setMessage(error.message)
+            setIsError(true)
         } finally {
-            setLoading(false);
-        }
-    };
-    const definirUsuario = async (access_token) => {
-        try {
-            const response = await fetch('http://localhost:8080/auth/profile', {
-                headers: {
-                    "Authorization": `Bearer ${access_token}`
-                }
-            })
-            const data = await response.json()
-            setLogged({
-                id: data.sub,
-                email: data.email
-            })
-        } catch (error) {
-            console.error(error)
+            setLoading(false)
         }
     }
 

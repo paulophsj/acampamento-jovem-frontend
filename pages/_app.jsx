@@ -1,4 +1,4 @@
-import { UserProvider } from "@/components/User/UserContext"
+import { UserProvider } from "@/components/Auth/UserContext"
 import "../app/globals.css"
 import "../app/style.css"
 

@@ -1,13 +1,12 @@
-import Login from '@/components/Login';
-import { UserContext } from '@/components/User/UserContext';
+import { UseUserContext } from '@/components/Auth/UserContext';
 import { faFacebook, faInstagram, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { faBirthdayCake, faEnvelope, faFire, faHeart, faMapMarked, faPhone, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 
 const AcampamentoJuventude = () => {
-  const { logged } = useContext(UserContext)
+  let { user } = UseUserContext()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hasMedication, setHasMedication] = useState(false);
   const [hasAllergies, setHasAllergies] = useState(false);
@@ -131,10 +130,11 @@ const AcampamentoJuventude = () => {
             <a href="#messages" className="nav-link relative group hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Mensagens<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span></a>
             <a href="#contact" className="nav-link relative group hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Contato<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span></a>
             {
-              logged && logged.id ? (
-                <p>
-                  {logged.email}
-                </p>
+              user && user.sub ? (
+                <Link href={{ pathname: "/dashboard" }} className='className="nav-link relative group hover:text-gray-300 transition-colors"'>
+                  {user.email}
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                </Link>
               ) : (
                 <Link href={{ pathname: "/login" }} className='className="nav-link relative group hover:text-gray-300 transition-colors"'>
                   Login
