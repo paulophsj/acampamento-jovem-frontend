@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 const AcampamentoJuventude = () => {
-  const { user } = UseUserContext()
+  const { user, load } = UseUserContext()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hasMedication, setHasMedication] = useState(false);
   const [hasAllergies, setHasAllergies] = useState(false);
@@ -130,7 +130,10 @@ const AcampamentoJuventude = () => {
             <a href="#registration" className="nav-link relative group hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Inscrição<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span></a>
             <a href="#messages" className="nav-link relative group hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Mensagens<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span></a>
             <a href="#contact" className="nav-link relative group hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Contato<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span></a>
-              {
+
+            {
+              load ? <Loader spinCollor={'white'} borderCollor={'black'} />
+                : (
                   user && user.sub ? (
                     <Link href={{ pathname: "/dashboard" }} className='className="nav-link relative group hover:text-gray-300 transition-colors"'>
                       {user.email}
@@ -142,8 +145,8 @@ const AcampamentoJuventude = () => {
                       <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
                     </Link>
                   )
-                
-              }
+                )
+            }
           </nav>
         </div>
 

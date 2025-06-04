@@ -3,8 +3,10 @@ import Alert from "./LabelMessage";
 import Loader from "./Loader";
 import { useRouter } from "next/router";
 import { CheckUserLogged, UserLogin } from "@/api/Auth";
+import { UseUserContext } from "./Auth/UserContext";
 
 export default function Login() {
+    const {checkAuth} = UseUserContext()
     const [message, setMessage] = useState("");
     const [isError, setIsError] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -19,6 +21,7 @@ export default function Login() {
             const credentials = Object.fromEntries(formResponse);
 
             const { message } = await UserLogin(credentials)
+            await checkAuth()
 
             setMessage(message + ". Redirecionando... ")
             setIsError(false)

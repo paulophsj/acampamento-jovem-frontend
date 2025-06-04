@@ -6,22 +6,27 @@ const UserContext = createContext()
 
 export function UserProvider({ children }) {
     const [user, setUser] = useState(null)
+    const [load, setLoad] = useState(false)
 
     useEffect(() => {
         checkAuth()
     }, [])
 
     const checkAuth = async () => {
+        setLoad(true)
         try {
             const userData = await CheckUserLogged()
             setUser(userData)
         }catch (err) {
             setUser(null)
         }
+        finally{
+            setLoad(false)
+        }
     }
     
     return (
-        <UserContext.Provider value={{ user }}>
+        <UserContext.Provider value={{ user, load, checkAuth }}>
             {children}
         </UserContext.Provider>
     )

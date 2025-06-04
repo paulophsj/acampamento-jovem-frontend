@@ -14,7 +14,7 @@ export const UserLogin = async (credentials) => {
         }
         return data;
     } catch (error) {
-        throw new Error(error.message || "Erro ao logar");
+        throw new Error(error.message);
     }
 };
 export const CheckUserLogged = async () => {
