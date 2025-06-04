@@ -25,7 +25,7 @@ export default function Dashboard() {
     fetchMessages();
   }, []);
 
-  const toggleApproval = (e) => {
+  const toggleApproval = (id) => {
     setMessages(messages.map(msg => 
       msg.id === id ? { ...msg, isActive: !msg.isActive } : msg
     ));
@@ -40,7 +40,10 @@ export default function Dashboard() {
   const saveApprovals = async () => {
     try {
       // Simulação de salvamento
-      console.log("Mensagens isActives:", messages.filter(msg => msg.isActive));
+      console.log("Mensagens isActives:", messages.filter(msg => msg.isActive).map((msg) => ({
+        id: msg.id,
+        isActive: msg.isActive
+      })));
       alert("Aprovações salvas com sucesso!");
     } catch (err) {
       console.error("Erro ao salvar aprovações:", err);
