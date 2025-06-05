@@ -1,8 +1,11 @@
+import { getAllMessagesForUser, postMessages } from '@/api/Messages';
 import { UseUserContext } from '@/components/Auth/UserContext';
+import Alert from '@/components/LabelMessage';
 import Loader from '@/components/Loader';
 import { faFacebook, faInstagram, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { faBirthdayCake, faEnvelope, faFire, faHeart, faMapMarked, faPhone, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
@@ -13,30 +16,29 @@ const AcampamentoJuventude = () => {
   const [hasAllergies, setHasAllergies] = useState(false);
   const [hasPsychMeds, setHasPsychMeds] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: "Estou muito animado para o acampamento deste ano! Será minha primeira vez participando e espero fazer novas amizades.",
-      author: "João Silva"
-    },
-    {
-      id: 2,
-      text: "Que Deus abençoe todos os preparativos e que seja um tempo de renovação espiritual para cada participante!",
-      author: "Maria Santos"
-    },
-    {
-      id: 3,
-      text: "Estou orando para que este acampamento seja um divisor de águas na vida de muitos jovens. Que possamos experimentar a presença de Deus de forma poderosa!",
-      author: "Pedro Oliveira"
-    },
-    {
-      id: 4,
-      text: "Mal posso esperar para louvar, orar e me divertir com meus amigos do grupo de jovens. Vai ser incrível!",
-      author: "Ana Costa"
-    }
-  ]);
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false)
+  const [mensagemMural, setMensagemMural] = useState({
+    isError: null,
+    message: null
+  })
 
+  const [error, setError] = useState({
+    isError: null,
+    mensagem: null
+  })
+
+  const getAllMessages = async () => {
+    try {
+      const data = await getAllMessagesForUser()
+      setMessages(data)
+    } catch (error) {
+      console.error(error.messages)
+    }
+
+  }
   useEffect(() => {
+    getAllMessages()
     const handleScroll = () => {
       setShowBackToTop(window.pageYOffset > 300);
     };
@@ -47,39 +49,48 @@ const AcampamentoJuventude = () => {
 
   const handleRegistrationSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
     const formData = new FormData(e.target);
     const formDataObj = {};
     formData.forEach((value, key) => {
       formDataObj[key] = value;
     });
-    await fetch('http://localhost:8080/usuario/create', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formDataObj),
-    }).then(() => {
-      console.log("Salvo no Banco!")
-    }).catch((err) => {
-      console.error("Deu erro " + err)
-    })
-    e.target.reset();
-  };
-
-  const handleMessageSubmit = (e) => {
-    e.preventDefault();
-    const name = e.target.messageName.value;
-    const text = e.target.messageText.value;
-
-    if (name && text) {
-      const newMessage = {
-        id: Date.now(),
-        text: text,
-        author: name
-      };
-
-      setMessages(prev => [newMessage, ...prev]);
+    try {
+      await postMessages(formDataObj)
+      setError({
+        isError: false,
+        mensagem: "Você foi registrado e em breve terá um retorno!"
+      })
       e.target.reset();
+    } catch (err) {
+      setError({
+        isError: true,
+        mensagem: err.message
+      })
+    }
+    finally {
+      setLoading(false)
     }
   };
+
+  const handleMessageSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target)
+    const formObject = {}
+    formData.forEach((value, key) => {
+      formObject[key] = value
+    })
+    try {
+      await postMessages(formObject)
+      setMensagemMural({ isError: false, message: "Agradeçemos sua mensagem! Em breve ela será analisada e inserida no mural." })
+      e.target.reset()
+    } catch (error) {
+      setMensagemMural({
+        isError: true,
+        message: error.message
+      })
+    }
+  }
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -247,47 +258,71 @@ const AcampamentoJuventude = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {/* Placeholder for gallery images */}
-            <div className="gallery-item aspect-square hover:scale-105 transition-transform bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
-              <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd"></path>
-              </svg>
+            <div className="gallery-item aspect-square hover:scale-105 transition-transform bg-gray-200 rounded-lg overflow-hidden relative">
+              <Image
+                src="/IMG_8030.JPG"
+                alt="Imagem do acampamento"
+                fill
+                className="object-cover"
+              />
             </div>
-            <div className="gallery-item aspect-square hover:scale-105 transition-transform bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
-              <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd"></path>
-              </svg>
+            <div className="gallery-item aspect-square hover:scale-105 transition-transform bg-gray-200 rounded-lg overflow-hidden relative">
+              <Image
+                src="/IMG_8157.JPG"
+                alt="Imagem do acampamento"
+                fill
+                className="object-cover"
+              />
             </div>
-            <div className="gallery-item aspect-square hover:scale-105 transition-transform bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
-              <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd"></path>
-              </svg>
+            <div className="gallery-item aspect-square hover:scale-105 transition-transform bg-gray-200 rounded-lg overflow-hidden relative">
+              <Image
+                src="/IMG_8224.JPG"
+                alt="Imagem do acampamento"
+                fill
+                className="object-cover"
+              />
             </div>
-            <div className="gallery-item aspect-square hover:scale-105 transition-transform bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
-              <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd"></path>
-              </svg>
+            <div className="gallery-item aspect-square hover:scale-105 transition-transform bg-gray-200 rounded-lg overflow-hidden relative">
+              <Image
+                src="/imagem5.JPG"
+                alt="Imagem do acampamento"
+                fill
+                className="object-cover"
+              />
             </div>
-            <div className="gallery-item aspect-square hover:scale-105 transition-transform bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
-              <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd"></path>
-              </svg>
+            <div className="gallery-item aspect-square hover:scale-105 transition-transform bg-gray-200 rounded-lg overflow-hidden relative">
+              <Image
+                src="/IMG_8310.JPG"
+                alt="Imagem do acampamento"
+                fill
+                className="object-cover"
+              />
             </div>
-            <div className="gallery-item aspect-square hover:scale-105 transition-transform bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
-              <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd"></path>
-              </svg>
+            <div className="gallery-item aspect-square hover:scale-105 transition-transform bg-gray-200 rounded-lg overflow-hidden relative">
+              <Image
+                src="/IMG_9835.jpg"
+                alt="Imagem do acampamento"
+                fill
+                className="object-cover"
+              />
             </div>
-            <div className="gallery-item aspect-square hover:scale-105 transition-transform bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
-              <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd"></path>
-              </svg>
+            <div className="gallery-item aspect-square hover:scale-105 transition-transform bg-gray-200 rounded-lg overflow-hidden relative">
+              <Image
+                src="/20190413194352_IMG_9860.jpg"
+                alt="Imagem do acampamento"
+                fill
+                className="object-cover"
+              />
             </div>
-            <div className="gallery-item aspect-square hover:scale-105 transition-transform bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
-              <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd"></path>
-              </svg>
+            <div className="gallery-item aspect-square hover:scale-105 transition-transform bg-gray-200 rounded-lg overflow-hidden relative">
+              <Image
+                src="/IMG_7827.JPG"
+                alt="Imagem do acampamento"
+                fill
+                className="object-cover"
+              />
             </div>
-          </div>
+            </div>
 
           <div className="mt-10 text-center">
             <p className="text-gray-600">Fotos de acampamentos anteriores. Venha fazer parte desta história!</p>
@@ -424,8 +459,19 @@ const AcampamentoJuventude = () => {
                 </div>
               </div>
 
+              {
+                error && error.isError !== null ? <Alert isError={error.isError} message={error.mensagem} /> : ""
+              }
               <div className="text-center pt-6">
-                <button type="submit" className="bg-white cursor-pointer text-black px-8 py-3 rounded-full font-bold hover:bg-gray-200 transition-colors transform hover:scale-105 duration-200">ENVIAR INSCRIÇÃO</button>
+                <button type={!loading ? "submit" : "button"} className="bg-white cursor-pointer text-black px-8 py-3 rounded-full font-bold hover:bg-gray-200 transition-colors transform hover:scale-105 duration-200">
+                  {
+                    loading ? (
+                      <Loader spinCollor={'black'} />
+                    ) : (
+                      "ENVIAR INSCRICAO"
+                    )
+                  }
+                </button>
               </div>
             </form>
           </div>
@@ -441,16 +487,23 @@ const AcampamentoJuventude = () => {
             <div className="bg-gray-100 rounded-lg p-6 mb-10">
               <form id="message-form" className="space-y-4" onSubmit={handleMessageSubmit}>
                 <div>
-                  <label htmlFor="messageName" className="block mb-2 font-medium">Seu nome</label>
-                  <input type="text" id="messageName" name="messageName" required className="form-input bg-white w-full px-4 py-2 rounded border border-gray-300 focus:outline-1" />
+                  <label htmlFor="nome" className="block mb-2 font-medium">Seu nome</label>
+                  <input type="text" id="nome" name="nome" required className="form-input bg-white w-full px-4 py-2 rounded border border-gray-300 focus:outline-1" />
                 </div>
 
                 <div>
-                  <label htmlFor="messageText" className="block mb-2 font-medium">Sua mensagem, expectativa ou oração</label>
-                  <textarea id="messageText" name="messageText" rows="4" required className="form-input bg-white w-full px-4 py-2 rounded border border-gray-300 focus:outline-1"></textarea>
+                  <label htmlFor="mensagem" className="block mb-2 font-medium">Sua mensagem, expectativa ou oração</label>
+                  <textarea id="mensagem" name="mensagem" rows="4" required className="form-input bg-white w-full px-4 py-2 rounded border border-gray-300 focus:outline-1"></textarea>
                 </div>
 
                 <div className="text-center">
+                  <div className={"mb-6"}>
+                    {
+                      mensagemMural && mensagemMural.isError == true ? <Alert isError={true} message={mensagemMural.message} />
+                        : mensagemMural && mensagemMural.isError == false ? <Alert isError={false} message={mensagemMural.message} />
+                          : ""
+                    }
+                  </div>
                   <button type="submit" className="bg-black text-white px-6 py-2 rounded-full font-bold hover:bg-gray-800 transition-colors">COMPARTILHAR</button>
                 </div>
               </form>
@@ -459,8 +512,8 @@ const AcampamentoJuventude = () => {
             <div id="messages-container" className="grid md:grid-cols-2 gap-6">
               {messages.map(message => (
                 <div key={message.id} className="message-card bg-gray-100 p-6 rounded-lg">
-                  <p className="italic text-gray-600 mb-4">"{message.text}"</p>
-                  <p className="font-bold text-right">- {message.author}</p>
+                  <p className="italic text-gray-600 mb-4">"{message.mensagem}"</p>
+                  <p className="font-bold text-right">- {message.nome}</p>
                 </div>
               ))}
             </div>

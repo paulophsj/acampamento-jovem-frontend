@@ -8,7 +8,7 @@ export function middleware(request) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
-  const protectedRoutes = ['/dashboard', '/admin', '/perfil']
+  const protectedRoutes = ['/dashboard', '/admin', '/perfil', '/user']
   const isProtected = protectedRoutes.some(route => pathname.startsWith(route))
 
   if (isProtected && !isLoggedIn) {
@@ -21,6 +21,7 @@ export function middleware(request) {
 export const config = {
   matcher: [
     '/login',
-    '/dashboard/:path*'
+    '/dashboard/:path*',
+    '/user/:path*'
   ],
 }

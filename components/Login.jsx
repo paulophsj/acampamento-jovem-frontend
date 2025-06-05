@@ -2,7 +2,7 @@ import { useState } from "react";
 import Alert from "./LabelMessage";
 import Loader from "./Loader";
 import { useRouter } from "next/router";
-import { CheckUserLogged, UserLogin } from "@/api/Auth";
+import { UserLogin } from "@/api/Auth";
 import { UseUserContext } from "./Auth/UserContext";
 
 export default function Login() {
