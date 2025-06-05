@@ -5,6 +5,7 @@ export function middleware(request) {
   const pathname = request.nextUrl.pathname
 
   console.log(isLoggedIn)
+  console.log("Isso é um middleware")
 
   if (pathname.startsWith('/login') && isLoggedIn) {
     return NextResponse.redirect(new URL('/', request.url))
