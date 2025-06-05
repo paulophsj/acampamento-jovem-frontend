@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export function middleware(request) {
-  const isLoggedIn = request.cookies.has('_vercel_jwt')
+  const isLoggedIn = request.cookies.getAll()[0].value
   const pathname = request.nextUrl.pathname
 
   if (pathname.startsWith('/login') && isLoggedIn) {
