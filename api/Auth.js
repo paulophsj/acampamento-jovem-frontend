@@ -1,6 +1,6 @@
 export const UserLogin = async (credentials) => {
     try {
-        const response = await fetch("http://localhost:8080/auth/login", {
+        const response = await fetch("https://acampamento-jovem-backend.onrender.com/auth/login", {
             method: "POST",
             headers: { "Content-type": "application/json" },
             credentials: "include",
@@ -19,7 +19,7 @@ export const UserLogin = async (credentials) => {
 };
 export const CheckUserLogged = async () => {
     try {
-        const response = await fetch("http://localhost:8080/auth/profile", {
+        const response = await fetch("https://acampamento-jovem-backend.onrender.com/auth/profile", {
             credentials: "include"
         });
         const data = await response.json();
