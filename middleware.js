@@ -5,22 +5,6 @@ export function middleware(request) {
   const isLoggedIn = request.cookies.get("access_token")?.value || firstCode;
   const pathname = request.nextUrl.pathname;
 
-  console.log("First code:", firstCode);
-  console.log("Is logged in:", isLoggedIn);
-
-  if (!isLoggedIn && firstCode) {
-    const response = NextResponse.next();
-    response.cookies.set("access_token", firstCode, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      maxAge: 60, // 60 segundos
-      path: '/',
-    });
-    response.cookies.delete("first_code");
-    return response;
-  }
-
   if (pathname.startsWith('/login') && isLoggedIn) {
     return NextResponse.redirect(new URL('/', request.url));
   }
