@@ -13,7 +13,7 @@ export function middleware(request) {
  * 
  */
   const firstCode = request.cookies.get("token_temporario")?.value;
-  const isLoggedIn = request.cookies.get("access_token")
+  const isLoggedIn = request.cookies.has("access_token")
   const pathname = request.nextUrl.pathname
 
   if (!isLoggedIn) {
