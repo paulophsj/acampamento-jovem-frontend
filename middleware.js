@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export function middleware(request) {
-  const isLoggedIn = request.cookies.getAll()
+  const isLoggedIn = request.cookies.get("access_token")
   const pathname = request.nextUrl.pathname
 
-  console.lot(isLoggedIn)
+  console.log("Access_Token" + isLoggedIn)
+  console.log("All cookies" + request.cookies.getAll())
 
   if (pathname.startsWith('/login') && isLoggedIn) {
     return NextResponse.redirect(new URL('/', request.url))
