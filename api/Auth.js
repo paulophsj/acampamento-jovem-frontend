@@ -12,7 +12,7 @@ export const UserLogin = async (credentials) => {
         if (!response.ok) {
             throw new Error(data.message || "Erro ao logar");
         }
-        document.cookie = `first_code=${data.access_token}; path=/; max-age=60; secure; samesite=none`;
+        document.cookie = `session=${data.access_token}; path=/; max-age=60; secure; samesite=none`;
         return data;
     } catch (error) {
         throw new Error(error.message);
