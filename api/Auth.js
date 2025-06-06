@@ -12,7 +12,6 @@ export const UserLogin = async (credentials) => {
         if (!response.ok) {
             throw new Error(data.message || "Erro ao logar");
         }
-        document.cookie = `access_token=${data.access_token}; path=/; max-age60; secure; samesite=none`;
         return data;
     } catch (error) {
         throw new Error(error.message);
