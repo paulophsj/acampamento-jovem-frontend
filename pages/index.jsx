@@ -115,7 +115,7 @@ const AcampamentoJuventude = () => {
   };
 
   return (
-    <div className="bg-white text-gray-900 absolute">
+    <div className="bg-white text-gray-900 max-sm:absolute">
       {/* Header/Navbar */}
       <header className="fixed w-full bg-black bg-opacity-90 text-white z-50">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
