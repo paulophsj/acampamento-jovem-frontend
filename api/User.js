@@ -1,6 +1,6 @@
 export const getAllUsers = async () => {
     try {
-        const response = await fetch('https://acampamento-jovem-backend.vercel.app/usuario/', {
+        const response = await fetch('https://acampamento-jovem-backend.onrender.com/usuario/', {
             credentials: "include"
         })
         const data = await response.json()
@@ -14,7 +14,7 @@ export const getAllUsers = async () => {
 }
 export const findOneUser = async (id) => {
         try {
-        const response = await fetch(`https://acampamento-jovem-backend.vercel.app/usuario/${id}`, {
+        const response = await fetch(`https://acampamento-jovem-backend.onrender.com/usuario/${id}`, {
             credentials: "include",
         })
         const data = await response.json()
@@ -28,7 +28,7 @@ export const findOneUser = async (id) => {
 }
 export const updateUser = async (id, novoUsuario) => {
     try {
-        const response = await fetch(`https://acampamento-jovem-backend.vercel.app/usuario/${id}`, {
+        const response = await fetch(`https://acampamento-jovem-backend.onrender.com/usuario/${id}`, {
             method: "PUT",
             credentials: "include",
             headers: {
@@ -47,7 +47,7 @@ export const updateUser = async (id, novoUsuario) => {
 }
 export const deleteUser = async (id) => {
         try {
-        const response = await fetch(`https://acampamento-jovem-backend.vercel.app/usuario/${id}`, {
+        const response = await fetch(`https://acampamento-jovem-backend.onrender.com/usuario/${id}`, {
             credentials: "include",
             method: "DELETE"
         })
