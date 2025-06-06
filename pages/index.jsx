@@ -115,7 +115,7 @@ const AcampamentoJuventude = () => {
   };
 
   return (
-    <div className="bg-white text-gray-900">
+    <div className="bg-white text-gray-900 absolute">
       {/* Header/Navbar */}
       <header className="fixed w-full bg-black bg-opacity-90 text-white z-50">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -170,9 +170,22 @@ const AcampamentoJuventude = () => {
             <a href="#registration" className="text-white hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Inscrição</a>
             <a href="#messages" className="text-white hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Mensagens</a>
             <a href="#contact" className="text-white hover:text-gray-300 transition-colors" onClick={handleAnchorClick}>Contato</a>
-            <Link href={{ pathname: "/login" }}>
-              Login
-            </Link>
+            {
+              load ? <Loader spinCollor={'white'} borderCollor={'black'} />
+                : (
+                  user && user.sub ? (
+                    <Link href={{ pathname: "/dashboard" }} className='className="nav-link relative group hover:text-gray-300 transition-colors"'>
+                      {user.email}
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
+                  ) : (
+                    <Link href={{ pathname: "/login" }} className='className="nav-link relative group hover:text-gray-300 transition-colors"'>
+                      Login
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
+                  )
+                )
+            }
           </div>
         </div>
       </header >
