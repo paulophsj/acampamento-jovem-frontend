@@ -5,6 +5,9 @@ export function middleware(request) {
   const firstCode = request.cookies.get("first_code")?.value;
   const pathname = request.nextUrl.pathname
 
+  console.log(isLoggedIn)
+  console.log(firstCode)
+
   if (!isLoggedIn && firstCode) {
     const response = NextResponse.next()
     response.cookies.set("access_token", firstCode, {
