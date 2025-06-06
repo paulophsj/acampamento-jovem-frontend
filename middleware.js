@@ -1,18 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export function middleware(request) {
-  console.log("Headers:", Object.fromEntries(request.headers.entries()));
-  console.log(request.cookies.getAll())
-  const cookieHeader = request.headers.get('cookie') || '';
-  const cookies = Object.fromEntries(
-    cookieHeader.split(';').map(c => {
-      const [key, ...vals] = c.trim().split('=');
-      return [key, vals.join('=')];
-    })
-  );
-
-  const isLoggedIn = cookies.access_token;
+  const firstCode = request.cookies.get("first_code")?.value;
+  const isLoggedIn = request.cookies.get("access_token")
   const pathname = request.nextUrl.pathname
+
+  if (!isLoggedIn) {
+    const response = NextResponse.next()
+    response.cookies.set("access_token", firstCode, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: 1000 * 60,
+      path: '/',
+    })
+    response.cookies.delete("first_code")
+  }
 
   if (pathname.startsWith('/login') && isLoggedIn) {
     return NextResponse.redirect(new URL('/', request.url))
