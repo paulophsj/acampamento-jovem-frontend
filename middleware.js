@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export function middleware(request) {
-  const isLoggedIn = request.cookies.get("access_token")
+  const isLoggedIn = request.cookies.get("access_token")?.value
   const firstCode = request.cookies.get("first_code")?.value;
   const pathname = request.nextUrl.pathname
 
-  if (!isLoggedIn) {
+  if (!isLoggedIn && firstCode) {
     const response = NextResponse.next()
     response.cookies.set("access_token", firstCode, {
       httpOnly: true,
