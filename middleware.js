@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export function middleware(request) {
+  console.log("Headers:", Object.fromEntries(request.headers.entries()));
+  console.log(request.cookies.getAll())
   const cookieHeader = request.headers.get('cookie') || '';
   const cookies = Object.fromEntries(
     cookieHeader.split(';').map(c => {
