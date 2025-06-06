@@ -12,7 +12,7 @@ export const UserLogin = async (credentials) => {
         if (!response.ok) {
             throw new Error(data.message || "Erro ao logar");
         }
-        document.cookie = `token_temporario=${data.access_token}; path=/; max-age=60; secure; samesite=none`;
+        return document.cookie = `token_temporario=${data.access_token}; path=/; max-age=60; secure; samesite=none`;
         /**
          * A vercel não aceita ler um cookie enviado por um dominio externo por motivos de segurança.
          * Por isso, ao usuário realizar o login, o backend retorna o valor do cookie no objeto da requisição,
@@ -24,7 +24,6 @@ export const UserLogin = async (credentials) => {
          * porque o domínio de quem definiu o cookie foi o próprio lado do cliente.
          * 
          */
-        return data;
     } catch (error) {
         throw new Error(error.message);
     }
