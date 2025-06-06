@@ -22,10 +22,10 @@ export function middleware(request) {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
-      maxAge: 1000 * 60,
+      maxAge: 60,
       path: '/',
     })
-    response.cookies.delete("first_code")
+    response.cookies.delete("token_temporario")
   }
 
   if (pathname.startsWith('/login') && isLoggedIn) {
