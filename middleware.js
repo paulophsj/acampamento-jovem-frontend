@@ -1,7 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export function middleware(request) {
-  const isLoggedIn = request.cookies.get("access_token")
+  const cookieHeader = request.headers.get('cookie') || '';
+  const cookies = Object.fromEntries(
+    cookieHeader.split(';').map(c => {
+      const [key, ...vals] = c.trim().split('=');
+      return [key, vals.join('=')];
+    })
+  );
+
+  const isLoggedIn = cookies.access_token;
   const pathname = request.nextUrl.pathname
 
   if (pathname.startsWith('/login') && isLoggedIn) {
