@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { findOneUser, updateUser } from '@/api/User';
 import Loader from '@/components/Loader';
 import Alert from '@/components/LabelMessage';
+import { IMaskInput } from 'react-imask';
 
 export default function EditUser() {
   const router = useRouter();
@@ -66,15 +67,15 @@ export default function EditUser() {
     }
   };
 
-  if (loading) return <Loader spinCollor={'black'} borderCollor={'white'}/>;
+  if (loading) return <Loader spinCollor={'black'} borderCollor={'white'} />;
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">Editar Usuário - ID: {id}</h1>
       {
         error ? (
-            <Alert isError={true} message={error}/>
+          <Alert isError={true} message={error} />
         ) : (
-            ""
+          ""
         )
       }
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -95,11 +96,17 @@ export default function EditUser() {
             </div>
             <div>
               <label className="block mb-1">Telefone</label>
-              <input
-                type="tel"
-                name="telefoneUsuario"
+              <IMaskInput
+                mask="(00) 0 0000-0000"
+                definitions={{
+                  '0': /[0-9]/
+                }}
                 value={formData.telefoneUsuario}
                 onChange={handleChange}
+                type="tel"
+                id="telefoneUsuario"
+                name="telefoneUsuario"
+                required
                 className="w-full p-2 border rounded"
               />
             </div>
@@ -210,11 +217,17 @@ export default function EditUser() {
             </div>
             <div>
               <label className="block mb-1">Telefone do Responsável</label>
-              <input
-                type="tel"
-                name="telefoneResponsavel"
+              <IMaskInput
+                mask="(00) 0 0000-0000"
+                definitions={{
+                  '0': /[0-9]/
+                }}
                 value={formData.telefoneResponsavel}
                 onChange={handleChange}
+                type="tel"
+                id="telefoneResponsavel"
+                name="telefoneResponsavel"
+                required
                 className="w-full p-2 border rounded"
               />
             </div>

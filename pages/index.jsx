@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { IMaskInput } from 'react-imask';
 
 const AcampamentoJuventude = () => {
   const { user, load } = UseUserContext()
@@ -336,8 +337,7 @@ const AcampamentoJuventude = () => {
                 className="object-cover"
               />
             </div>
-            </div>
-
+          </div>
           <div className="mt-10 text-center">
             <p className="text-gray-600">Fotos de acampamentos anteriores. Venha fazer parte desta história!</p>
           </div>
@@ -361,12 +361,20 @@ const AcampamentoJuventude = () => {
                   <label htmlFor="nomeGrupo" className="block mb-2 font-medium">Nome do grupo pequeno</label>
                   <input type="text" id="nomeGrupo" name="nomeGrupo" required className="form-input w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none" />
                 </div>
-
                 <div>
                   <label htmlFor="telefoneUsuario" className="block mb-2 font-medium">Telefone do participante</label>
-                  <input type="tel" id="telefoneUsuario" name="telefoneUsuario" required className="form-input w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none" />
+                  <IMaskInput
+                    mask="(00) 0 0000-0000"
+                    definitions={{
+                      '0': /[0-9]/
+                    }}
+                    type="tel"
+                    id="telefoneUsuario"
+                    name="telefoneUsuario"
+                    required
+                    className="form-input w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none"
+                  />
                 </div>
-
                 <div>
                   <label htmlFor="nomeResponsavel" className="block mb-2 font-medium">Nome do responsável</label>
                   <input type="text" id="nomeResponsavel" name="nomeResponsavel" required className="form-input w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none" />
@@ -374,9 +382,18 @@ const AcampamentoJuventude = () => {
 
                 <div>
                   <label htmlFor="telefoneResponsavel" className="block mb-2 font-medium">Telefone do responsável</label>
-                  <input type="tel" id="telefoneResponsavel" name="telefoneResponsavel" required className="form-input w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none" />
+                  <IMaskInput
+                    mask="(00) 0 0000-0000"
+                    definitions={{
+                      '0': /[0-9]/
+                    }}
+                    type="tel"
+                    id="telefoneResponsavel"
+                    name="telefoneResponsavel"
+                    required
+                    className="form-input w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none"
+                  />
                 </div>
-
                 <div>
                   <label htmlFor="parentescoResponsavel" className="block mb-2 font-medium">Relação do responsável com o participante</label>
                   <input type="text" id="parentescoResponsavel" name="parentescoResponsavel" required className="form-input w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none" />
