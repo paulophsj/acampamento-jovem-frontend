@@ -1,6 +1,6 @@
 export const getAllUsers = async () => {
     try {
-        const response = await fetch('https://acampamento-jovem-backend.onrender.com/usuario/', {
+        const response = await fetch('https://acampamento-jovem-backend.onrender.com/usuario/create', {
             credentials: "include"
         })
         const data = await response.json()
