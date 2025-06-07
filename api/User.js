@@ -1,6 +1,8 @@
+import { BASE_URL } from "./config/envConfig"
+
 export const getAllUsers = async () => {
     try {
-        const response = await fetch('https://acampamento-jovem-backend.onrender.com/usuario/', {
+        const response = await fetch(`${BASE_URL}/usuario/`, {
             credentials: "include"
         })
         const data = await response.json()
@@ -14,7 +16,7 @@ export const getAllUsers = async () => {
 }
 export const findOneUser = async (id) => {
         try {
-        const response = await fetch(`https://acampamento-jovem-backend.onrender.com/usuario/${id}`, {
+        const response = await fetch(`${BASE_URL}/usuario/${id}`, {
             credentials: "include",
         })
         const data = await response.json()
@@ -28,7 +30,7 @@ export const findOneUser = async (id) => {
 }
 export const updateUser = async (id, novoUsuario) => {
     try {
-        const response = await fetch(`https://acampamento-jovem-backend.onrender.com/usuario/${id}`, {
+        const response = await fetch(`${BASE_URL}/usuario/${id}`, {
             method: "PUT",
             credentials: "include",
             headers: {
@@ -47,7 +49,7 @@ export const updateUser = async (id, novoUsuario) => {
 }
 export const deleteUser = async (id) => {
         try {
-        const response = await fetch(`https://acampamento-jovem-backend.onrender.com/usuario/${id}`, {
+        const response = await fetch(`${BASE_URL}/usuario/${id}`, {
             credentials: "include",
             method: "DELETE"
         })
@@ -60,7 +62,7 @@ export const deleteUser = async (id) => {
 }
 export const createUser = async (user) => {
         try {
-        const response = await fetch(`https://acampamento-jovem-backend.onrender.com/usuario/create`, {
+        const response = await fetch(`${BASE_URL}/usuario/create`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

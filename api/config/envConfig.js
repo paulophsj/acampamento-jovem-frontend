@@ -1,0 +1,1 @@
+export const BASE_URL = process.env.PRODUCTION ? "https://acampamento-jovem-backend.onrender.com" : "http://localhost:8080"

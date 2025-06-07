@@ -1,6 +1,8 @@
+import { BASE_URL } from "./config/envConfig";
+
 export const UserLogin = async (credentials) => {
     try {
-        const response = await fetch("https://acampamento-jovem-backend.onrender.com/auth/login", {
+        const response = await fetch(`${BASE_URL}/auth/login`, {
             method: "POST",
             headers: { "Content-type": "application/json" },
             credentials: "include",
@@ -20,7 +22,7 @@ export const UserLogin = async (credentials) => {
 };
 export const CheckUserLogged = async () => {
     try {
-        const response = await fetch("https://acampamento-jovem-backend.onrender.com/auth/profile", {
+        const response = await fetch(`${BASE_URL}/auth/profile`, {
             credentials: "include"
         });
         const data = await response.json();
