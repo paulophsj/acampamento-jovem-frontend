@@ -1,1 +1,1 @@
-export const BASE_URL = process.env.PRODUCTION === true ? "https://acampamento-jovem-backend.onrender.com" : "http://localhost:8080"
+export const BASE_URL = process.env.PRODUCTION === "true" ? "https://acampamento-jovem-backend.onrender.com" : "http://localhost:8080"
