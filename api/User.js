@@ -1,6 +1,6 @@
 export const getAllUsers = async () => {
     try {
-        const response = await fetch('https://acampamento-jovem-backend.onrender.com/usuario/create', {
+        const response = await fetch('https://acampamento-jovem-backend.onrender.com/usuario/', {
             credentials: "include"
         })
         const data = await response.json()
@@ -53,6 +53,22 @@ export const deleteUser = async (id) => {
         })
         if (!response.ok) {
             throw new Error(data.message || "Erro ao buscar usuários")
+        }
+    } catch (error) {
+        throw new Error(error.message)
+    }
+}
+export const createUser = async (user) => {
+        try {
+        const response = await fetch(`https://acampamento-jovem-backend.onrender.com/usuario/create`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        })
+        if (!response.ok) {
+            throw new Error(data.message || "Erro ao cadastrar")
         }
     } catch (error) {
         throw new Error(error.message)

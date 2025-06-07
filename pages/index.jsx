@@ -1,4 +1,5 @@
 import { getAllMessagesForUser, postMessages } from '@/api/Messages';
+import { createUser } from '@/api/User';
 import { UseUserContext } from '@/components/Auth/UserContext';
 import Alert from '@/components/LabelMessage';
 import Loader from '@/components/Loader';
@@ -56,7 +57,7 @@ const AcampamentoJuventude = () => {
       formDataObj[key] = value;
     });
     try {
-      await postMessages(formDataObj)
+      await createUser(formDataObj)
       setError({
         isError: false,
         mensagem: "Você foi registrado e em breve terá um retorno!"
