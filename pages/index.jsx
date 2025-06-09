@@ -24,6 +24,7 @@ const AcampamentoJuventude = () => {
     isError: null,
     message: null
   })
+  const [loadMessages, setLoadMessages] = useState(false)
 
   const [error, setError] = useState({
     isError: null,
@@ -31,12 +32,14 @@ const AcampamentoJuventude = () => {
   })
 
   const getAllMessages = async () => {
+    setLoadMessages(true)
     try {
       const data = await getAllMessagesForUser()
       setMessages(data)
     } catch (error) {
       console.error(error.messages)
     }
+    setLoadMessages(false)
 
   }
   useEffect(() => {
@@ -530,9 +533,18 @@ const AcampamentoJuventude = () => {
                 <div className="text-center">
                   <div className={"mb-6"}>
                     {
-                      mensagemMural && mensagemMural.isError == true ? <Alert isError={true} message={mensagemMural.message} />
-                        : mensagemMural && mensagemMural.isError == false ? <Alert isError={false} message={mensagemMural.message} />
+                      loadMessages ? (
+                        <div className='flex gap-2'>
+                          <Loader spinCollor={'black'} />
+                          <p>
+                            Carregando mensagens...
+                          </p>
+                        </div>
+                      ) : (
+                        mensagemMural && mensagemMural.isError == true ? <Alert isError={true} message={mensagemMural.message} />
+                          : mensagemMural && mensagemMural.isError == false ? <Alert isError={false} message={mensagemMural.message} />
                           : ""
+                      )
                     }
                   </div>
                   <button type="submit" className="bg-black text-white px-6 py-2 rounded-full font-bold hover:bg-gray-800 transition-colors">COMPARTILHAR</button>
