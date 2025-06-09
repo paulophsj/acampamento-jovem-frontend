@@ -10,6 +10,7 @@ export default function Messages() {
   const [error, setError] = useState(null);
   const [selectAll, setSelectAll] = useState(false);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [requestLoading, setRequestLoading] = useState(false)
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -27,6 +28,11 @@ export default function Messages() {
   }, []);
 
   const sendMessages = async () => {
+    if(requestLoading){
+      alert("Aguarde a requisição terminar.")
+      return
+    }
+    setRequestLoading(true)
     try {
       for (const message of messages) {
         await updateMessages(message.id, { isActive: message.isActive })
@@ -35,6 +41,9 @@ export default function Messages() {
       setTimeout(() => setSuccessMessage(null), 3000); // Remove a mensagem após 3 segundos
     } catch (error) {
       setError(error.message);
+    }
+    finally{
+      setRequestLoading(false)
     }
   }
 
@@ -95,9 +104,15 @@ export default function Messages() {
             </div>
             <button
               onClick={sendMessages}
-              className="bg-gray-900 cursor-pointer text-white px-4 py-2 rounded-md text-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+              className="bg-gray-900 flex justify-center items-center cursor-pointer text-white px-4 py-2 rounded-md text-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             >
-              Salvar Aprovações
+              {
+                requestLoading ? (
+                  <Loader spinCollor={'white'}/>
+                ) : (
+                  "Salvar Aprovações"
+                )
+              }
             </button>
           </div>
 

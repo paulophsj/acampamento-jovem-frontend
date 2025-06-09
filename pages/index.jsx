@@ -533,18 +533,9 @@ const AcampamentoJuventude = () => {
                 <div className="text-center">
                   <div className={"mb-6"}>
                     {
-                      loadMessages ? (
-                        <div className='flex gap-2'>
-                          <Loader spinCollor={'black'} />
-                          <p>
-                            Carregando mensagens...
-                          </p>
-                        </div>
-                      ) : (
-                        mensagemMural && mensagemMural.isError == true ? <Alert isError={true} message={mensagemMural.message} />
-                          : mensagemMural && mensagemMural.isError == false ? <Alert isError={false} message={mensagemMural.message} />
-                          : ""
-                      )
+                      mensagemMural && mensagemMural.isError == true ? <Alert isError={true} message={mensagemMural.message} />
+                        : mensagemMural && mensagemMural.isError == false ? <Alert isError={false} message={mensagemMural.message} />
+                        : ""
                     }
                   </div>
                   <button type="submit" className="bg-black text-white px-6 py-2 rounded-full font-bold hover:bg-gray-800 transition-colors">COMPARTILHAR</button>
@@ -553,12 +544,21 @@ const AcampamentoJuventude = () => {
             </div>
 
             <div id="messages-container" className="grid md:grid-cols-2 gap-6">
-              {messages.map(message => (
-                <div key={message.id} className="message-card bg-gray-100 p-6 rounded-lg">
-                  <p className="italic text-gray-600 mb-4">"{message.mensagem}"</p>
-                  <p className="font-bold text-right">- {message.nome}</p>
-                </div>
-              ))}
+              {
+                loadMessages ? (
+                  <div className='flex gap-2'>
+                    <Loader spinCollor={'black'} />
+                    <p>
+                      Carregando mensagens...
+                    </p>
+                  </div>
+                ) : messages.map(message => (
+                  <div key={message.id} className="message-card bg-gray-100 p-6 rounded-lg">
+                    <p className="italic text-gray-600 mb-4">"{message.mensagem}"</p>
+                    <p className="font-bold text-right">- {message.nome}</p>
+                  </div>
+                ))
+              }
             </div>
           </div>
         </div>
