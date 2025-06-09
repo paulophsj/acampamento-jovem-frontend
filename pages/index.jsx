@@ -543,7 +543,7 @@ const AcampamentoJuventude = () => {
               </form>
             </div>
 
-            <div id="messages-container" className="grid md:grid-cols-2 gap-6">
+            <div id="messages-container" className={`${loadMessages ? "w-full flex justify-center items-center" : "grid md:grid-cols-2 gap-6"}`}>
               {
                 loadMessages ? (
                   <div className='flex gap-2'>
